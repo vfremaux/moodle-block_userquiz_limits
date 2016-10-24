@@ -33,20 +33,18 @@ class User_Attempts_Form extends moodleform {
     protected $filter;
     protected $url;
 
-    public function __construct(&$quiz, $pagesize = 20, $offset = 0, $filter = '', $groupid = 0) {
+    public function __construct(&$quiz, $pagesize = 20, $offset = 0, $filter = '') {
         $this->quiz = $quiz;
         $this->pagesize = $pagesize;
         $this->offset = $offset;
         $this->filter = $filter;
-        parent::__construct(null, array('groupid' => $groupid));
+        parent::__construct();
     }
 
     public function definition() {
         global $COURSE, $DB, $SESSION;
 
         $mform =& $this->_form;
-
-        $mform->disable_form_change_checker();
 
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
@@ -61,18 +59,9 @@ class User_Attempts_Form extends moodleform {
         $group[1] = & $mform->createElement('submit', 'setfilter', get_string('setfilter', 'block_userquiz_limits'));
         $group[2] = & $mform->createElement('submit', 'clearfilter', get_string('clearfilter', 'block_userquiz_limits'));
 
-        if ($groups = groups_get_all_groups($COURSE->id, 0, 0, 'g.id,g.name')) {
-            $groupopts[''] = get_string('allgroups');
-            foreach (array_values($groups) as $coursegroup) {
-                $groupopts[$coursegroup->id] = $coursegroup->name;
-            }
-            $attrs = array('onchange' => 'this.form.submit()');
-            $group[3] = & $mform->createElement('select', 'groupid', '', $groupopts, $attrs);
-        }
+        $mform->setType('filter[namefilter]', PARAM_TEXT);
 
-        $mform->setType('namefilter', PARAM_TEXT);
-
-        $mform->addGroup($group, 'filter', get_string('namefilter', 'block_userquiz_limits'), '', array(), false);
+        $mform->addGroup($group, 'filter', get_string('namefilter', 'block_userquiz_limits'));
         $mform->addHelpButton('filter', 'regexfilter', 'block_userquiz_limits');
 
         $thiscontext = context_course::instance($COURSE->id);
@@ -82,18 +71,15 @@ class User_Attempts_Form extends moodleform {
         $userfields = 'u.id,'.get_all_user_name_fields(true, 'u');
 
         $context = context_module::instance($this->quiz->get_cmid());
-        $gid = $this->_customdata['groupid'];
-
-        if (!empty($SESSION->namefilter) || !empty($gid)) {
+        if (!empty($SESSION->namefilter)) {
             /*
              * If using name filter, we do not page the results. We will add an additional field to distribute,
              * add or substract some attempts to the selection.
              */
-            if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $userfields, 'lastname,firstname', '', '', $gid)) {
+            if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $userfields, 'lastname,firstname')) {
                 foreach ($quizusers as $user) {
                     if (!empty($SESSION->namefilter)) {
-                        if (!preg_match("/{$SESSION->namefilter}/i", $user->firstname) &&
-                                !preg_match("/{$SESSION->namefilter}/i", $user->lastname)) {
+                        if (!preg_match("/{$SESSION->namefilter}/i", fullname($user))) {
                             continue;
                         }
                     }
