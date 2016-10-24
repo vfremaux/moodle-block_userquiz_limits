@@ -35,13 +35,14 @@ $timestamp = time();
 
 $id = required_param('id', PARAM_INT); // The course id.
 $blockid = required_param('blockid', PARAM_INT); // The block.
+$groupid = optional_param('groupid', '', PARAM_INT); // A Group id.
 
 if (!$instance = $DB->get_record('block_instances', array('id' => $blockid))) {
     print_error('coursemisconf');
 }
 $theblock = block_instance('userquiz_limits', $instance);
 
-if (! $course = $DB->get_record("course", array('id' => $id))) {
+if (!$course = $DB->get_record("course", array('id' => $id))) {
     print_error('coursemisconf');
 }
 
@@ -77,21 +78,23 @@ $PAGE->set_heading(get_string('blockname', 'block_userquiz_limits'));
 $PAGE->set_title(get_string('blockname', 'block_userquiz_limits'));
 $PAGE->requires->js('/blocks/userquiz_limits/js/js.js');
 
-$mform = new User_Attempts_Form($quizobj, 20, optional_param('from', 0, PARAM_INT));
+$mform = new User_Attempts_Form($quizobj, 20, optional_param('from', 0, PARAM_INT), '', $groupid);
 
 if ($mform->is_cancelled()) {
     redirect($courseurl);
 }
 
 if ($data = $mform->get_data()) {
-    if (isset($data->filter['setfilter'])) {
-        $SESSION->namefilter = stripslashes($data->filter['namefilter']);
-        $mform = new User_Attempts_Form($quizobj, 20, optional_param('from', 0, PARAM_INT));
-    } else if (isset($data->filter['clearfilter'])) {
+    if (isset($data->setfilter) || isset($data->groupid)) {
+        if (isset($data->setfilter)) {
+            $SESSION->namefilter = stripslashes($data->namefilter);
+        }
+        $mform = new User_Attempts_Form($quizobj, 20, optional_param('from', 0, PARAM_INT), '', $data->groupid);
+    } else if (isset($data->clearfilter)) {
         unset($SESSION->namefilter);
-        $data->filter['namefilter'] = '';
-        $_POST['filter']['namefilter'] = '';
-        $mform = new User_Attempts_Form($quizobj, 20, optional_param('from', 0, PARAM_INT));
+        $data->namefilter = '';
+        $_POST['namefilter'] = '';
+        $mform = new User_Attempts_Form($quizobj, 20, optional_param('from', 0, PARAM_INT), '', $data->groupid);
     } else {
         $selection = preg_grep('/^limit/', array_keys((array)$data));
         $selection = preg_replace('/^limit/', '', $selection);
@@ -100,10 +103,11 @@ if ($data = $mform->get_data()) {
         $todelete = array();
         if (!empty($SESSION->namefilter)) {
             $fields = 'u.id,'.get_all_user_name_fields(true, 'u');
-            if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $fields, 'lastname,firstname')) {
+            if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $fields, 'lastname,firstname', '', '', $groupid)) {
                 foreach ($quizusers as $user) {
                     if (!empty($SESSION->namefilter)) {
-                        if (!preg_match("/{$SESSION->namefilter}/i", fullname($user))) {
+                        if (!preg_match("/{$SESSION->namefilter}/i", $user->firstname) &&
+                                !preg_match("/{$SESSION->namefilter}/i", $user->lastname)) {
                             continue;
                         }
                     }
@@ -149,6 +153,7 @@ echo $OUTPUT->box_start('', 'userquiz-limits-userattempts-form');
 
 $presetdata = array();
 $presetdata['id'] = $id;
+$presetdata['groupid'] = $groupid;
 $presetdata['blockid'] = $blockid;
 if ($userlimitations = $DB->get_records('qa_usernumattempts_limits', array('quizid' => $quiz->id))) {
     foreach ($userlimitations as $limit) {
@@ -160,12 +165,15 @@ $mform->display();
 
 echo '<center>';
 $context = context_module::instance($quizobj->get_cmid());
-if ($allquizusers = get_users_by_capability($context, 'mod/quiz:attempt', 'u.id,'.get_all_user_name_fields(true, 'u'), 'lastname,firstname')) {
+
+$fields = 'u.id,'.get_all_user_name_fields(true, 'u');
+$allquizusers = get_users_by_capability($context, 'mod/quiz:attempt', $fields, 'lastname,firstname', '', '', $groupid);
+if ($allquizusers) {
     $alluserscount = count($allquizusers);
 } else {
     $alluserscount = 0;
 }
-if (empty($SESSION->namefilter)){
+if (empty($SESSION->namefilter)) {
     echo $mform->pager($alluserscount, $url);
 }
 echo '</center>';

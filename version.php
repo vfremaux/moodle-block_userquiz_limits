@@ -34,4 +34,4 @@ $plugin->release = "2.7 (Build 20150804)";
 $plugin->dependencies = array('quizaccess_usernumattempts' => 2016062300);
 
 // Non moodle attributes.
-$plugin->codeincrement = '2.7.0000';
+$plugin->codeincrement = '2.7.0001';
