@@ -68,7 +68,7 @@ $quizobj = quiz::create($theblock->config->quizid, $USER->id);
 $rule = quizaccess_usernumattempts::make($quizobj, null, null);
 
 if (!$rule->is_enabled() && has_capability('mod/quiz:manage', $context)) {
-    redirect(new moodle_url('/mod/quiz/edit.php'), array('q' => $quiz->id));
+    redirect(new moodle_url('/mod/quiz/edit.php', array('cmid' => $cm->id)));
 }
 
 $PAGE->set_url($url);
@@ -82,6 +82,8 @@ $mform = new User_Attempts_Form($quizobj, 20, optional_param('from', 0, PARAM_IN
 if ($mform->is_cancelled()) {
     redirect($courseurl);
 }
+
+$feedback = '';
 
 if ($data = $mform->get_data()) {
     if (isset($data->filter['setfilter'])) {
@@ -140,10 +142,16 @@ if ($data = $mform->get_data()) {
                 }
             }
         }
+        $feedback = $OUTPUT->notification(get_string('dataupdated', 'block_userquiz_limits'), 'notifysuccess');
     }
 }
 
 echo $OUTPUT->header();
+
+if (!empty($feedback)) {
+    echo $feedback;
+}
+
 echo $OUTPUT->heading(get_string('setuserattemptslimits', 'block_userquiz_limits'));
 echo $OUTPUT->box_start('', 'userquiz-limits-userattempts-form');
 
