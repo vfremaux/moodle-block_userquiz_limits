@@ -25,7 +25,7 @@ before_install:
 
 install:
 
-  - moodle-plugin-ci --branch $MOODLE_BRANCH vfremaux/moodle-quizaccess_usernumattempts
+  - moodle-plugin-ci add-plugin --branch $MOODLE_BRANCH vfremaux/moodle-quizaccess_usernumattempts
   - moodle-plugin-ci install
 
 script:
