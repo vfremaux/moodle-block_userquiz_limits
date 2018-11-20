@@ -69,7 +69,7 @@ $rule = quizaccess_usernumattempts::make($quizobj, null, null);
 
 if (!$rule->is_enabled() && has_capability('mod/quiz:manage', $context)) {
     $retrunurl = new moodle_url('/mod/quiz/modedit.php', array('update' => $cm->id, 'return' => 1));
-    echo $OUTPUT->continue_button($returnurl, get_string('noruleonquiz', 'block_userquiz_limits));
+    echo $OUTPUT->continue_button($returnurl, get_string('noruleonquiz', 'block_userquiz_limits'));
 }
 
 $PAGE->set_url($url);
