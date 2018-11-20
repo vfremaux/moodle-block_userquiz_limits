@@ -30,6 +30,7 @@ $string['blockname'] = 'User attempts limits';
 $string['userquiz_limits'] = 'User attempts limits';
 $string['configquizid'] = 'Userquiz instance';
 $string['notconfigured'] = 'This block is not configured';
+$string['noruleonquiz'] = 'The quiz associated to this bloc instance do NOT have the user attempts limitation option enabled. Continue to set it up ?';
 $string['misconfigured'] = 'This bloc configuration is erroneous';
 $string['notallowed'] = 'You do not have capabilities to manage this instance';
 $string['setattemptslimits'] = 'Setup attempts limits for users';
