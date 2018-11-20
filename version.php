@@ -45,5 +45,9 @@ $plugin->release = '3.5.0 (Build 2018011800)';
 $plugin->dependencies = array('quizaccess_usernumattempts' => 2016062300);
 
 // Non moodle attributes.
+<<<<<<< HEAD
 $plugin->codeincrement = '3.5.0002';
+>>>>>>> MOODLE_35_STABLE
+=======
+$plugin->codeincrement = '3.5.0003';
 >>>>>>> MOODLE_35_STABLE
