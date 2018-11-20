@@ -22,7 +22,7 @@ $string['regexfilter_help'] = 'Utilisez une expression régulière pour filtrer 
 $string['setuserattemptslimits'] = 'Modifier les limites de tentatives des utilisateurs';
 $string['attemptslimit'] = 'Tentatives max pour {$a->user} (consommé : {$a->used})&nbsp;:&ensp;';
 $string['rec'] = 'Enregistrer tel que';
-$string['set'] = 'Mettre à';
+$string['set'] = 'Mettre à la valeur';
 $string['add'] = 'Ajouter';
 $string['sub'] = 'Enlever';
 
