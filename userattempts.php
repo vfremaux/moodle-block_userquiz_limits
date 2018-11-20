@@ -68,8 +68,12 @@ $quizobj = quiz::create($theblock->config->quizid, $USER->id);
 $rule = quizaccess_usernumattempts::make($quizobj, null, null);
 
 if (!$rule->is_enabled() && has_capability('mod/quiz:manage', $context)) {
+    echo $OUTPUT->header();
+    echo $OUTPUT->notification(get_string('noruleonquiz', 'block_userquiz_limits'));
     $returnurl = new moodle_url('/mod/quiz/modedit.php', array('update' => $cm->id, 'return' => 1));
-    echo $OUTPUT->continue_button($returnurl, get_string('noruleonquiz', 'block_userquiz_limits'));
+    echo $OUTPUT->continue_button($returnurl);
+    echo $OUTPUT->footer();
+    die;
 }
 
 $PAGE->set_url($url);
