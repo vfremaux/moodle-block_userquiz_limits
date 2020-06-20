@@ -4,9 +4,11 @@ $string['userquiz_limits:addinstance'] = 'Peut ajouter une instance au cours';
 $string['userquiz_limits:myaddinstance'] = 'Peut ajouter une instance sur la page persoonalisée';
 
 $string['pluginname'] = 'Limites utilisateur des tentatives';
+$string['backtocourse'] = 'Revenir au cours';
 $string['blockname'] = 'Limites utilisateur des tentatives';
 $string['userquiz_limits'] = 'Limites utilisateur des tentatives';
 $string['configquizid'] = 'Instance de test à gérer';
+$string['configinitialcredit'] = 'Crédit initial à l\'inscription';
 $string['notconfigured'] = 'Ce bloc n\'est pas configué';
 $string['noruleonquiz'] = 'Le quiz associé à ce bloc n\'a pas l\'option des "limites de tentatives par utilisateur" activée. Continuer pour la configurer ?';
 $string['misconfigured'] = 'Ce bloc n\'est pas correctement configué';
