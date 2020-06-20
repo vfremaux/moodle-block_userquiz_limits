@@ -15,23 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
- *
  * @package     block_userquiz_limits
  * @category    blocks
- * @author      valery.fremaux <valery.fremaux@gmail.com>
- * @copyright   2013 onwards Valery Fremaux (http://www.mylearningfactory.com)
+ * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (MyLearningFactory.com)
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020011500; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2018112800; // Requires this Moodle version.
-$plugin->component = 'block_userquiz_limits'; // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_RC;
-$plugin->release = '3.6.0 (Build 2020011500)';
-$plugin->dependencies = array('quizaccess_usernumattempts' => 2016062300);
-
-// Non moodle attributes.
-$plugin->codeincrement = '3.6.0004';
+$observers = array (
+    array(
+        'eventname'   => '\core\event\user_enrolment_created',
+        'callback'    => 'block_userquiz_limits_event_observer::on_user_enrolment_created',
+        'includefile' => '/blocks/userquiz_limits/observers.php',
+        'internal'    => true,
+        'priority'    => 9999,
+    ),
+);
