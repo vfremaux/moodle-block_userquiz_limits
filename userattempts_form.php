@@ -67,9 +67,7 @@ class User_Attempts_Form extends moodleform {
 
         $attrs = array('maxlength' => 3, 'size' => 4);
 
-        // M4.
-        $fields = \core_user\fields::for_name()->with_userpic()->excluding('id')->get_required_fields();
-        $fields = 'u.id,'.implode(',', $fields);
+        $userfields = 'u.id,'.get_all_user_name_fields(true, 'u');
 
         $opgroup = array();
         $opgroup[] = $mform->createElement('text', 'value', '');
@@ -95,7 +93,7 @@ class User_Attempts_Form extends moodleform {
              * add or substract some attempts to the selection.
              */
              var_dump('COUCOU');
-            if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $fields, 'lastname,firstname')) {
+            if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $userfields, 'lastname,firstname')) {
                 foreach ($quizusers as $user) {
                     if (!empty($SESSION->namefilter)) {
                         if (!preg_match("/{$SESSION->namefilter}/i", fullname($user))) {
