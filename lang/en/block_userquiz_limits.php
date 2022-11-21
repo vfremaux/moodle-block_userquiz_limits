@@ -41,6 +41,7 @@ $string['setfilter'] = 'Set filter';
 $string['clearfilter'] = 'Clear filter';
 $string['regexfilter'] = 'Regular expression filtering';
 $string['dataupdated'] = 'Data has been updated';
+$string['onall'] = 'On all enrolled';
 
 $string['regexfilter_help'] = 'Use a regular expression to filter users';
 $string['setuserattemptslimits'] = 'Setup user attempts';

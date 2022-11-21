@@ -19,6 +19,7 @@ $string['setfilter'] = 'Activer le filtre';
 $string['clearfilter'] = 'Supprimer le filtre';
 $string['regexfilter'] = 'Filtrage par expression régulière';
 $string['dataupdated'] = 'Les données ont été mises à jour';
+$string['onall'] = 'Sut tous les inscrits';
 
 $string['regexfilter_help'] = 'Utilisez une expression régulière pour filtrer les utilisateurs.';
 $string['setuserattemptslimits'] = 'Modifier les limites de tentatives des utilisateurs';

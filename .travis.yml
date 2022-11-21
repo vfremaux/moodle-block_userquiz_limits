@@ -18,32 +18,15 @@ cache:
     - $HOME/.npm
 
 php:
-<<<<<<< HEAD
- - 7.2
-=======
  - 7.3
->>>>>>> e87de7609744985c1c486b497979c5d0ca48f564
 
 env:
  global:
-  - MOODLE_BRANCH=MOODLE_38_STABLE
-  - PLUGINS_BRANCH=MOODLE_38_WORKING
+  - MOODLE_BRANCH=MOODLE_39_STABLE
+  - PLUGINS_BRANCH=MOODLE_39_WORKING
  matrix:
-<<<<<<< HEAD
-  - DB=mysqli MOODLE_BRANCH=MOODLE_33_STABLE
-  - DB=pgsql MOODLE_BRANCH=MOODLE_33_STABLE
-
-=======
-  global:
-    - MOODLE_BRANCH=MOODLE_36_STABLE
-  matrix:
-    - DB=mysqli
-    - DB=pgsql
->>>>>>> MOODLE_35_STABLE
-=======
   - DB=pgsql
   - DB=mariadb
->>>>>>> e87de7609744985c1c486b497979c5d0ca48f564
 
 before_install:
   - phpenv config-rm xdebug.ini
