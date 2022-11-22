@@ -102,7 +102,9 @@ if ($data = $mform->get_data()) {
         // Non optimal.
         $todelete = array();
         if (!empty($SESSION->namefilter)) {
-            $fields = 'u.id,'.get_all_user_name_fields(true, 'u');
+            // M4.
+            $fields = \core_user\fields::for_name()->with_userpic()->excluding('id')->get_required_fields();
+            $fields = 'u.id,'.implode(',', $fields);
             if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $fields, 'lastname,firstname')) {
                 foreach ($quizusers as $user) {
                     if (!empty($SESSION->namefilter)) {
@@ -169,7 +171,10 @@ $mform->display();
 
 echo '<center>';
 $context = context_module::instance($quizobj->get_cmid());
-if ($allquizusers = get_users_by_capability($context, 'mod/quiz:attempt', 'u.id,'.get_all_user_name_fields(true, 'u'), 'lastname,firstname')) {
+// M4.
+$fields = \core_user\fields::for_name()->with_userpic()->excluding('id')->get_required_fields();
+$fields = 'u.id,'.implode(',', $fields);
+if ($allquizusers = get_users_by_capability($context, 'mod/quiz:attempt', $fields, 'lastname,firstname')) {
     $alluserscount = count($allquizusers);
 } else {
     $alluserscount = 0;
