@@ -177,6 +177,9 @@ if ($allquizusers = get_users_by_capability($context, 'mod/quiz:attempt', 'u.id,
 if (empty($SESSION->namefilter)){
     echo $mform->pager($alluserscount, $url);
 }
+
+echo $OUTPUT->single_button(new moodle_url('/course/view.php', ['id' => $course->id]), get_string('backtocourse', 'block_userquiz_limits'));
+
 echo '</center>';
 echo $OUTPUT->box_end();
 
