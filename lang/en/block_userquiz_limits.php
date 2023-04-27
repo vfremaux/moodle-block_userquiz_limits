@@ -26,9 +26,11 @@ $string['userquiz_limits:addinstance'] = 'Can add an instance to the course';
 $string['userquiz_limits:myaddinstance'] = 'Can add an instance to the My page';
 
 $string['pluginname'] = 'User attempts limits';
+$string['backtocourse'] = 'Go back to course';
 $string['blockname'] = 'User attempts limits';
 $string['userquiz_limits'] = 'User attempts limits';
 $string['configquizid'] = 'Userquiz instance';
+$string['configinitialcredit'] = 'Initial credit on enrol';
 $string['notconfigured'] = 'This block is not configured';
 $string['noruleonquiz'] = 'The quiz associated to this bloc instance do NOT have the user attempts limitation option enabled. Continue to set it up ?';
 $string['misconfigured'] = 'This bloc configuration is erroneous';

@@ -34,5 +34,19 @@ class block_userquiz_limits_edit_form extends block_edit_form {
         $options = $DB->get_records_menu('quiz', array('course' => $COURSE->id), 'name', 'id,name');
 
         $mform->addElement('select', 'config_quizid', get_string('configquizid', 'block_userquiz_limits'), $options);
+
+        $creditoptions = [
+            0 => 0,
+            1 => 1,
+            2 => 2,
+            3 => 3,
+            4 => 4,
+            5 => 5,
+            10 => 10,
+            15 => 15,
+            20 => 20,
+        ];
+
+        $mform->addElement('select', 'config_initialcredit', get_string('configinitialcredit', 'block_userquiz_limits'), $creditoptions);
     }
 }
