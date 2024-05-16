@@ -32,7 +32,7 @@ $string['userquiz_limits'] = 'User attempts limits';
 $string['configquizid'] = 'Userquiz instance';
 $string['configinitialcredit'] = 'Initial credit on enrol';
 $string['notconfigured'] = 'This block is not configured';
-$string['noruleonquiz'] = 'The quiz associated to this bloc instance do NOT have the user attempts limitation option enabled. Continue to set it up ?';
+$string['noruleonquiz'] = 'The quiz associated to this block instance do NOT have the "user attempts limitation" restriction rule enabled. Continue to set it up ?';
 $string['misconfigured'] = 'This bloc configuration is erroneous';
 $string['notallowed'] = 'You do not have capabilities to manage this instance';
 $string['setattemptslimits'] = 'Setup attempts limits for users';
@@ -41,6 +41,7 @@ $string['setfilter'] = 'Set filter';
 $string['clearfilter'] = 'Clear filter';
 $string['regexfilter'] = 'Regular expression filtering';
 $string['dataupdated'] = 'Data has been updated';
+$string['onall'] = 'On all enrolled';
 
 $string['regexfilter_help'] = 'Use a regular expression to filter users';
 $string['setuserattemptslimits'] = 'Setup user attempts';

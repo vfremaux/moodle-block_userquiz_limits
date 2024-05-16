@@ -27,11 +27,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2020011500; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2019051100; // Requires this Moodle version.
+$plugin->requires  = 2022112801; // Requires this Moodle version.
 $plugin->component = 'block_userquiz_limits'; // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_RC;
-$plugin->release = '3.7.0 (Build 2020011500)';
+$plugin->maturity = MATURITY_STABLE;
+$plugin->release = '4.1.0 (Build 2020011500)';
+$plugin->supported = [401, 402];
 $plugin->dependencies = array('quizaccess_usernumattempts' => 2016062300);
 
 // Non moodle attributes.
-$plugin->codeincrement = '3.7.0004';
+$plugin->codeincrement = '4.1.0004';
