@@ -58,17 +58,35 @@ class User_Attempts_Form extends moodleform {
         $group[0] = & $mform->createElement('text', 'namefilter');
         $group[1] = & $mform->createElement('submit', 'setfilter', get_string('setfilter', 'block_userquiz_limits'));
         $group[2] = & $mform->createElement('submit', 'clearfilter', get_string('clearfilter', 'block_userquiz_limits'));
-
-        $mform->setType('filter[namefilter]', PARAM_TEXT);
-
         $mform->addGroup($group, 'filter', get_string('namefilter', 'block_userquiz_limits'));
+        $mform->setType('filter[namefilter]', PARAM_TEXT);
+        $mform->setType('namefilter', PARAM_TEXT);
         $mform->addHelpButton('filter', 'regexfilter', 'block_userquiz_limits');
 
         $thiscontext = context_course::instance($COURSE->id);
 
         $attrs = array('maxlength' => 3, 'size' => 4);
 
-        $userfields = 'u.id,'.get_all_user_name_fields(true, 'u');
+        // M4.
+        $fields = \core_user\fields::for_name()->with_userpic()->excluding('id')->get_required_fields();
+        $fields = 'u.id,'.implode(',', $fields);
+
+        $opgroup = array();
+        $opgroup[] = $mform->createElement('text', 'value', '');
+        $setattrs = array('onclick' => 'set_value("set")',
+                          'onmouseover' => 'preview_value("set")',
+                          'onmouseout' => 'cancel_preview()');
+        $opgroup[] = $mform->createElement('button', 'set', get_string('set', 'block_userquiz_limits'), $setattrs);
+        $addattrs = array('onclick' => 'set_value("add")',
+                          'onmouseover' => 'preview_value("add")',
+                          'onmouseout' => 'cancel_preview()');
+        $opgroup[] = $mform->createElement('button', 'add', get_string('add', 'block_userquiz_limits'), $addattrs);
+        $subattrs = array('onclick' => 'set_value("sub")',
+                          'onmouseover' => 'preview_value("sub")',
+                          'onmouseout' => 'cancel_preview()');
+        $opgroup[] = $mform->createElement('button', 'sub', get_string('sub', 'block_userquiz_limits'), $subattrs);
+
+        $mform->setType('value', PARAM_INT);
 
         $context = context_module::instance($this->quiz->get_cmid());
         if (!empty($SESSION->namefilter)) {
@@ -76,7 +94,7 @@ class User_Attempts_Form extends moodleform {
              * If using name filter, we do not page the results. We will add an additional field to distribute,
              * add or substract some attempts to the selection.
              */
-            if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $userfields, 'lastname,firstname')) {
+            if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $fields, 'lastname,firstname')) {
                 foreach ($quizusers as $user) {
                     if (!empty($SESSION->namefilter)) {
                         if (!preg_match("/{$SESSION->namefilter}/i", fullname($user))) {
@@ -101,24 +119,7 @@ class User_Attempts_Form extends moodleform {
                     $mform->addGroup($group, 'limitgroup'.$user->id, $label, array($container), false);
                 }
 
-                $group = array();
-                $group[] = $mform->createElement('text', 'value', '');
-                $setattrs = array('onclick' => 'set_value("set")',
-                                  'onmouseover' => 'preview_value("set")',
-                                  'onmouseout' => 'cancel_preview()');
-                $group[] = $mform->createElement('button', 'set', get_string('set', 'block_userquiz_limits'), $setattrs);
-                $addattrs = array('onclick' => 'set_value("add")',
-                                  'onmouseover' => 'preview_value("add")',
-                                  'onmouseout' => 'cancel_preview()');
-                $group[] = $mform->createElement('button', 'add', get_string('add', 'block_userquiz_limits'), $addattrs);
-                $subattrs = array('onclick' => 'set_value("sub")',
-                                  'onmouseover' => 'preview_value("sub")',
-                                  'onmouseout' => 'cancel_preview()');
-                $group[] = $mform->createElement('button', 'sub', get_string('sub', 'block_userquiz_limits'), $subattrs);
-
-                $mform->setType('value', PARAM_INT);
-
-                $mform->addGroup($group, 'selectionopgroup', get_string('withselection', 'block_userquiz_limits'), '', array(), false);
+                $mform->addGroup($opgroup, 'selectionopgroup', get_string('withselection', 'block_userquiz_limits'), '', array(), false);
             }
         } else {
             if ($quizusers = get_users_by_capability($context, 'mod/quiz:attempt', $userfields, 'lastname,firstname',
@@ -134,6 +135,8 @@ class User_Attempts_Form extends moodleform {
                     $mform->addElement('text', 'limit'.$user->id, get_string('attemptslimit', 'block_userquiz_limits', $d), $attrs);
                     $mform->setType('limit'.$user->id, PARAM_TEXT);
                 }
+
+                $mform->addGroup($opgroup, 'allopgroup', get_string('onall', 'block_userquiz_limits'), '', array(), false);
             }
         }
 

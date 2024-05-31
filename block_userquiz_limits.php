@@ -33,6 +33,12 @@ class block_userquiz_limits extends block_base {
         return true;
     }
 
+    function instance_allow_multiple() {
+        // Are you going to allow multiple instances of each block?
+        // If yes, then it is assumed that the block WILL USE per-instance configuration
+        return true;
+    }
+
     public function applicable_formats() {
         return array('all' => false, 'mod' => false, 'tag' => false, 'course' => true);
     }

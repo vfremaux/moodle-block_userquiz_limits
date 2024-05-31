@@ -34,7 +34,7 @@ class block_userquiz_limits_event_observer {
     public static function on_user_enrolment_created($eventdata) {
         global $DB;
 
-        $userid = $eventdata->userid;
+        $userid = $eventdata->relateduserid;
         $courseid = $eventdata->courseid;
 
         // Get all userquiz_limits intances in course.
@@ -48,6 +48,7 @@ class block_userquiz_limits_event_observer {
 
         foreach ($blockinstances as $bi) {
             $instance = block_instance('userquiz_limits', $bi);
+            $params = ['quizid' => $instance->config->quizid, 'userid' => $userid];
             if ($oldrecord = $DB->get_record('qa_usernumattempts_limits', $params)) {
                 $oldrecord->maxattempts = $instance->config->initialcredit;
                 $DB->update_record('qa_usernumattempts_limits', $oldrecord);
